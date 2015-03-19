@@ -1,6 +1,3 @@
-
-building TDD BDD login system
-
 ## Project Login System
 
 #### Database Layer: 
@@ -27,19 +24,19 @@ basic tests for PDO layer and User class
 #### USAGE
 ##### change config file for database settings
 ##### CRUD
-create
-insert
-update 
-delete
+* **create**
+* **insert**
+* **update** 
+* **delete**
 
 
 ###### SEARCH options
 
-select first
-select all
-select where
-order by
-group by
-limit
+* **select first**
+* **select all**
+* **select where**
+* **order by**
+* **group by**
+* **limit**
 
 
