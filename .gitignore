@@ -15,7 +15,7 @@ error.log # ignore error logs
 
 .htaccess
 index.php
-/config
+/app/config/config.php
 /vendor
 json.lock
 
