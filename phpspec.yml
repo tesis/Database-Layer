@@ -1,0 +1,10 @@
+suites:
+    tes_suite:
+        namespace: Tesis
+        src_path: app/Tesis
+        spec_path: .
+        spec_prefix: spec
+
+        
+
+        
