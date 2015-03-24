@@ -1,23 +1,33 @@
 <?php //app/Tesis/Database/PDORepository.php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+/**
+ * This file is part of the Tesis framework.
+ *
+ * PHP version 5.6
+ *
+ * @author     Tereza Simcic <tereza.simcic@gmail.com>
+ * @copyright  2014-2015 Tesis, Tereza Simcic
+ * @license    MIT
+ * @link       https://github.com/tesis/login
+ *
+ */
+
+namespace Tesis\Database;
+
+use \PDO;
+use Tesis\Database\Faces\AdapterInterface;
+use Tesis\Database\Traits\PDOconnectTrait;
+
+//using const just for test
+require_once('app/config/config.php');
 
 /**
  * Class PDORepository
  *
  * PHP version 5.6
  *
- * @category   Login_System
- * @package    Login_System
- * @subpackage User_Class
+ * @package    Database_Layer
+ * @subpackage Login_System
  * @author     Tereza Simcic <tereza.simcic@gmail.com>
- * @copyright  2015 Tereza Simcic
- * @license    Tereza Simcic
- *
- *
- * @link       https://github.com/tesis/login
- * @name       PDORepository.php
- *
- *
  *
  * Short description
  * a database layer based on PDO library
@@ -28,19 +38,9 @@
  * TDD tests can be found in tests folder, BDD in spec folder
  *
  */
-
-namespace Tesis\Database;
-
-use \PDO;
-use Tesis\Database\Faces\AdapterInterface;
-use Tesis\Database\Traits\PDOconnection;
-
-//using const just for test
-require_once('app/config/config.php');
-
 class PDORepository implements AdapterInterface, \Countable
 {
-    use PDOconnection;
+    use PDOconnectTrait;
 
     /**
      * @access protected
@@ -530,10 +530,10 @@ class PDORepository implements AdapterInterface, \Countable
      *
      * @param array $fields an array of fields with values
      *
-     * @return array
+     * @return string
      *
     */
-    public function checkInputArray(array $fields = null)
+    public function checkInputArray(array $fields = null, $operator = ' AND ')
     {
         if(is_null($fields)) return false;
 
@@ -549,7 +549,7 @@ class PDORepository implements AdapterInterface, \Countable
             $arr[] = $key . '="' . $val . '"';
         }
 
-        return (!empty($arr)) ? $arr : false;
+        return (!empty($arr)) ? implode($operator , $arr) : false;
     }
     /**
      * select
@@ -584,7 +584,24 @@ class PDORepository implements AdapterInterface, \Countable
         //$array - array of keys(fields) and values
         $checkInput = $this->checkInputArray($array);
 
-        $this->where = ' WHERE ' . implode($checkInput);
+        $this->where = ' WHERE ' . $checkInput;
+        return $this;
+    }
+    /**
+     * whereOr
+     *
+     * @param array $array an array of filelds and values
+     *                     using OR as a delimiter
+     *
+     * @return
+     *
+    */
+    public function whereOr(array $array=null)
+    {
+        //$array - array of keys(fields) and values
+        $checkInput = $this->checkInputArray($array, ' OR ');
+
+        $this->where = ' WHERE ' . $checkInput;
         return $this;
     }
     /**
@@ -682,7 +699,6 @@ class PDORepository implements AdapterInterface, \Countable
                     if ($sth->execute() !== false) {
                         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
                         $this->countable = sizeof($result);
-                        echo 'Countable: ' . $this->countable;
                     return $result;
                 }
             }

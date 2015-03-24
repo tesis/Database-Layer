@@ -93,8 +93,7 @@ class UserTest extends PHPUnit_Framework_TestCase
 
         $result = $this->user->checkInputArray($fields);
 
-        $this->assertNotSame(['username'=>'tesi','uid'=> 1], $result, 'Expected Pass - getting prepared array');
-        $this->assertSame(['username="tesi"','uid="1"'], $result);
+        $this->assertSame('username="tesi" AND uid="1"', $result, 'Expected Pass - getting prepared array');
 
     }
     /**
@@ -108,8 +107,7 @@ class UserTest extends PHPUnit_Framework_TestCase
 
         $result = $this->user->checkInputArray($fields);
 
-        $this->assertNotSame(['username'=>'tesi','uid'=> 1], $result, 'Expected Pass - getting prepared array, redundant field removed');
-        $this->assertSame(['username="tesi"','uid="1"'], $result);
+        $this->assertSame('username="tesi" AND uid="1"', $result, 'Expected Pass - getting prepared array, redundant field removed');
 
     }
 //User story test
@@ -250,8 +248,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     /**
      * test_if_Exception_is_Thown_Using_Get_And_First_In_Same_Query
      *
-     * @exceptionExpected
-     *
     */
     public function test_if_Exception_is_Thown_Using_Get_And_First_In_Same_Query()
     {
@@ -260,6 +256,35 @@ class UserTest extends PHPUnit_Framework_TestCase
         //print_r($test);
         $result = $test->fetch();
         $expected = 'SELECT * FROM '.$this->dbName.'.'.$this->table.' WHERE uid="1" GROUP BY username ORDER BY uid ASC';
+    }
+    /**
+     * test_Get_User_By_Params_Where_Array_Pass
+     *
+    */
+    public function test_Get_User_By_Params_Where_Array_Pass()
+    {
+        $params = ['uid'=>1,'username' => 'tesis'];
+        $test = $this->user;
+
+        $test->where($params)->first();
+
+        $result = $test->fetch();
+        $this->assertNotEmpty($result, 'Expected Pass');
+    }
+    /**
+     * test_Get_User_By_Params_WhereOr_Array_Pass
+     *
+    */
+    public function test_Get_User_By_Params_WhereOr_Array_Pass()
+    {
+        $params = ['username'=>'tesi','username' => 'tesis'];
+        $test = $this->user;
+
+        $test->whereOr($params)->first();
+
+        $result = $test->fetch();
+        $this->assertNotEmpty($result, 'Expected Pass');
+        $this->assertNotEquals(0, sizeof($result), 'Expected Pass');
     }
 
 }
