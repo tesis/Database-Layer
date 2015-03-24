@@ -14,6 +14,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->table = 'users';
+        $this->tablePK = 'uid';
         $this->dbName = 'pdoTest';
 
         $this->classRepo = 'Tesis\Tables\User';

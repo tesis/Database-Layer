@@ -1,38 +1,33 @@
 <?php //app/lib/Tesis/Tables/User.php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Class PDORepository
+ * This file is part of the Tesis framework.
  *
  * PHP version 5.6
  *
- * @category   Login_System
- * @package    Login_System
- * @subpackage User_Class
  * @author     Tereza Simcic <tereza.simcic@gmail.com>
- * @copyright  2015 Tereza Simcic
- * @license    Tereza Simcic
- *
- *
+ * @copyright  2014-2015 Tesis, Tereza Simcic
+ * @license    MIT
  * @link       https://github.com/tesis/login
- * @name       User.php
  *
- *
- *
- * Short description
- * a child class using DB layer
- *
- * Long description
- * a database layer is based on PDO library
- * a child class is a class for new table with specific variables
- * defined
- * 
  */
 namespace Tesis\Tables;
 
 use Tesis\Database\PDORepository as DataObject;
 
+/**
+ * Class User
+ *
+ * PHP version 5.6
+ *
+ * @package    Database_Layer
+ * @subpackage Login_System
+ * @author     Tereza Simcic <tereza.simcic@gmail.com>
+ *
+ * Short description
+ * an example class to perform test
+ *
+ */
 class User extends DataObject
 {
     /**
@@ -44,6 +39,9 @@ class User extends DataObject
     /**
      * @access protected
      * @var string
+     *
+     * for compound keys use array:
+     * $tablePK = ['uid','anotherId']
      */
     public $tablePK = 'uid';
     /**
